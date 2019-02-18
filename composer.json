@@ -1,0 +1,19 @@
+{
+    "name": "hjenneberg/php-link-phonenumber",
+    "description": "",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jens Henneberg",
+            "email": "hens.jenneberg@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"HJenneberg\\LinkPhoneNumber\\": "src/"}
+    },
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    }
+}
