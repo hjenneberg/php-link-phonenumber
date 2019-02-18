@@ -18,8 +18,16 @@ class Link
     {
         $number = preg_replace('#[^\d+]#', '', $number);
 
-        $number = '+49' . substr($number, 1);
+        $hasCountryTrunk = 0 === strpos($number, '+');
+        if ($hasCountryTrunk) {
+            return $number;
+        }
 
-        return $number;
+        $hasCountryCode = 0 === strpos($number, '00');
+        if ($hasCountryCode) {
+            return '+' . substr($number, 2);
+        }
+
+        return '+49' . substr($number, 1);
     }
 }
