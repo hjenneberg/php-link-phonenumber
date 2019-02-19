@@ -14,19 +14,25 @@ final class LinkTest extends TestCase
      * @noinspection PhpMethodNamingConventionInspection
      *
      * @test
-     */
-    public function it_works_for_certain_cases()
-    {
-        self::assertSame('+49711123456789', Link::get('0711 123 45 67 89'));
-    }
-    /**
-     * @noinspection PhpMethodNamingConventionInspection
+     * @dataProvider number
      *
-     * @test
+     * @param string $number
+     * @param string $expected
      */
-    public function it_works_for_other_cases()
+    public function it_works_for_common_phone_numbers(string $number, string $expected)
     {
-        self::assertSame('+49711123456789', Link::get('+49 711 123 45 67 89'));
-        self::assertSame('+49711123456789', Link::get('0049 711 123 45 67 89'));
+        self::assertSame($expected, Link::get($number));
+    }
+
+    /**
+     * @return array
+     */
+    public function number(): array
+    {
+        return [
+            ['number' => '0711 123 45 67 89', 'expected' => '+49711123456789'],
+            ['number' => '+49 711 123 45 67 89', 'expected' => '+49711123456789'],
+            ['number' => '0049 711 123 45 67 89', 'expected' => '+49711123456789'],
+        ];
     }
 }
