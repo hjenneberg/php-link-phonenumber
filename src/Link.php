@@ -33,7 +33,9 @@ class Link
      */
     public function get(string $number): string
     {
-        $number = preg_replace('#[^\d+]#', '', $number);
+        $number = $this->strategy->cleanUp($number);
+
+        $this->strategy->checkValidity($number);
 
         $hasCountryTrunk = 0 === strpos($number, '+');
         if ($hasCountryTrunk) {
@@ -43,13 +45,6 @@ class Link
         $hasCountryCode = 0 === strpos($number, '00');
         if ($hasCountryCode) {
             return '+' . substr($number, 2);
-        }
-
-        $hasAreaCode = 0 === strpos($number, '0');
-        if (!$hasAreaCode) {
-            throw new InvalidNumberFormat(sprintf(
-                'Can\'t recognize the format of the phone number "%s"', $number
-            ));
         }
 
         return '+49' . substr($number, 1);
