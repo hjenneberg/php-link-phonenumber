@@ -1,6 +1,6 @@
 # php-link-phonenumber
 
-A library to transform any phone number to a format usable in an href attribute of an html anchor.
+A library to transform any phone number to a format usable in the href attribute of an html anchor.
 
 > The library assumes you're transforming german phone numbers because that's the only use case for me right now. 
 
