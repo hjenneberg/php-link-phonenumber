@@ -26,7 +26,7 @@ Add the library as a dependency to your project:
 ```json
 {
     "require": {
-        "hjenneberg/php-link-phonenumber": "^0.1.0"
+        "hjenneberg/php-link-phonenumber": "^0.2.1"
     }
 }
 ```
