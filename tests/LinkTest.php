@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use HJenneberg\LinkPhoneNumber\Exception\InvalidNumberFormat;
 use HJenneberg\LinkPhoneNumber\Link;
+use HJenneberg\LinkPhoneNumber\Strategy\Germany;
+use HJenneberg\LinkPhoneNumber\Strategy\StrategyInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,14 +19,15 @@ final class LinkTest extends TestCase
      * @test
      * @dataProvider number
      *
+     * @param StrategyInterface $strategy
      * @param string $number
      * @param string $expected
      *
      * @throws InvalidNumberFormat
      */
-    public function it_works_for_phone_numbers_I_know(string $number, string $expected)
+    public function it_works_for_phone_numbers_I_know(StrategyInterface $strategy, string $number, string $expected)
     {
-        self::assertSame($expected, Link::get($number));
+        self::assertSame($expected, (new Link($strategy))->get($number));
     }
 
     /**
@@ -39,7 +42,7 @@ final class LinkTest extends TestCase
         /** @noinspection PhpParamsInspection */
         self::expectException(InvalidNumberFormat::class);
 
-        Link::get('123 456 789');
+        (new Link(new Germany()))->get('123 456 789');
     }
 
     /**
@@ -47,10 +50,12 @@ final class LinkTest extends TestCase
      */
     public function number(): array
     {
+        $germany = new Germany();
+
         return [
-            ['number' => '0711 123 45 67 89', 'expected' => '+49711123456789'],
-            ['number' => '+49 711 123 45 67 89', 'expected' => '+49711123456789'],
-            ['number' => '0049 711 123 45 67 89', 'expected' => '+49711123456789'],
+            ['strategy' => $germany, 'number' => '0711 123 45 67 89',     'expected' => '+49711123456789'],
+            ['strategy' => $germany, 'number' => '+49 711 123 45 67 89',  'expected' => '+49711123456789'],
+            ['strategy' => $germany, 'number' => '0049 711 123 45 67 89', 'expected' => '+49711123456789'],
         ];
     }
 }

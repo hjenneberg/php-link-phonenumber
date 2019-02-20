@@ -1,6 +1,6 @@
 {
     "name": "hjenneberg/php-link-phonenumber",
-    "description": "",
+    "description": "A library to transform any phone number to a format usable in the href attribute of an html anchor.",
     "type": "library",
     "license": "MIT",
     "authors": [

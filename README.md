@@ -1,6 +1,6 @@
 # php-link-phonenumber
 
-A library to transform any phone number to a format usable in an href attribute of an html anchor.
+A library to transform any phone number to a format usable in the href attribute of an html anchor.
 
 > The library assumes you're transforming german phone numbers because that's the only use case for me right now. 
 
@@ -26,25 +26,43 @@ Add the library as a dependency to your project:
 ```json
 {
     "require": {
-        "hjenneberg/php-link-phonenumber": "^0.0.1"
+        "hjenneberg/php-link-phonenumber": "^0.1.0"
     }
 }
 ```
 
 ## Usage
 
-Import the class `HJenneberg\LinkPhoneNumber\Link` and call Link::get() with the phone number as a parameter:
+I'm assuming you use some kind of auto loader (e.g. composer autoload).
 
 ```php
 <?php
 
-declare(strict_types=1);
+use HJenneberg\LinkPhoneNumber\Link;
+use HJenneberg\LinkPhoneNumber\Strategy\Germany;
+
+// create an instance of an area strategy
+$strategy = new Germany();
+
+// create an instance of Link using the strategy
+$link = new Link($strategy);
+
+// execute
+echo $link->get('0711 123 45 67 89') . PHP_EOL; // results in +49711123456789
+```
+`./example/02-usage.php`
+
+### Examples
+
+```php
+<?php
 
 use HJenneberg\LinkPhoneNumber\Exception\InvalidNumberFormat;
 use HJenneberg\LinkPhoneNumber\Link;
+use HJenneberg\LinkPhoneNumber\Strategy\Germany;
 
 try {
-    echo Link::get('0711 123 45 67 89'); // results in +49711123456789
+    echo (new Link(new Germany()))->get('0711 123 45 67 89') . PHP_EOL; // results in +49711123456789
 } catch (InvalidNumberFormat $e) {
     echo $e->getMessage();
 }
