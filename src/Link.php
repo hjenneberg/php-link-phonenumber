@@ -33,20 +33,10 @@ class Link
      */
     public function get(string $number): string
     {
-        $number = $this->strategy->cleanUp($number);
-
-        $this->strategy->checkValidity($number);
-
-        $hasCountryTrunk = 0 === strpos($number, '+');
-        if ($hasCountryTrunk) {
-            return $number;
+        if (!$this->strategy->isValid($number)) {
+            throw new InvalidNumberFormat(sprintf('Invalid number format for number "%s"', $number));
         }
 
-        $hasCountryCode = 0 === strpos($number, '00');
-        if ($hasCountryCode) {
-            return '+' . substr($number, 2);
-        }
-
-        return '+49' . substr($number, 1);
+        return $this->strategy->transform($this->strategy->cleanUp($number));
     }
 }

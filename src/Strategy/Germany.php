@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace HJenneberg\LinkPhoneNumber\Strategy;
 
-use HJenneberg\LinkPhoneNumber\Exception\InvalidNumberFormat;
-
 /**
  * Class Germany
  */
@@ -14,13 +12,30 @@ class Germany extends AbstractStrategy
     /**
      * @param string $number
      *
-     * @return void
-     * @throws InvalidNumberFormat
+     * @return bool
      */
-    public function checkValidity(string $number): void
+    public function isValid(string $number): bool
     {
-        if (!preg_match('#^\+49|0049|0[1-9]#', $number)) {
-            throw new InvalidNumberFormat(sprintf('Invalid number format for number "%s"', $number));
+        return 1 === preg_match('#^\+49|0049|0[1-9]#', $this->cleanUp($number));
+    }
+
+    /**
+     * @param string $number
+     *
+     * @return string
+     */
+    public function transform(string $number): string
+    {
+        $hasCountryTrunk = 0 === strpos($number, '+');
+        if ($hasCountryTrunk) {
+            return $number;
         }
+
+        $hasCountryCode = 0 === strpos($number, '00');
+        if ($hasCountryCode) {
+            return '+' . substr($number, 2);
+        }
+
+        return '+49' . substr($number, 1);
     }
 }
