@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use HJenneberg\LinkPhoneNumber\Exception\InvalidNumberFormat;
 use HJenneberg\LinkPhoneNumber\Link;
-use HJenneberg\LinkPhoneNumber\Strategy\Germany;
+use HJenneberg\LinkPhoneNumber\Strategy\AbstractStrategy;
 use HJenneberg\LinkPhoneNumber\Strategy\StrategyInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -17,17 +17,21 @@ final class LinkTest extends TestCase
      * @noinspection PhpMethodNamingConventionInspection
      *
      * @test
-     * @dataProvider number
      *
-     * @param StrategyInterface $strategy
-     * @param string $number
-     * @param string $expected
-     *
+     * @throws ReflectionException
      * @throws InvalidNumberFormat
      */
-    public function it_works_for_phone_numbers_I_know(StrategyInterface $strategy, string $number, string $expected)
+    public function it_fails_on_invalid_format()
     {
-        self::assertSame($expected, (new Link($strategy))->get($number));
+        $strategy = self::getMockForAbstractClass(AbstractStrategy::class);
+        $strategy->method('isValid')->willReturn(false);
+
+        /** @var StrategyInterface $strategy */
+        $link = new Link($strategy);
+
+        self::expectException(InvalidNumberFormat::class);
+
+        $link->get('123456789');
     }
 
     /**
@@ -35,27 +39,18 @@ final class LinkTest extends TestCase
      *
      * @test
      *
+     * @throws ReflectionException
      * @throws InvalidNumberFormat
      */
-    public function it_fails_on_missing_area_code()
+    public function it_uses_the_given_strategy_for_transformation()
     {
-        /** @noinspection PhpParamsInspection */
-        self::expectException(InvalidNumberFormat::class);
+        $strategy = self::getMockForAbstractClass(AbstractStrategy::class);
+        $strategy->method('isValid')->willReturn(true);
+        $strategy->expects(static::once())->method('transform');
 
-        (new Link(new Germany()))->get('123 456 789');
-    }
+        /** @var StrategyInterface $strategy */
+        $link = new Link($strategy);
 
-    /**
-     * @return array
-     */
-    public function number(): array
-    {
-        $germany = new Germany();
-
-        return [
-            ['strategy' => $germany, 'number' => '0711 123 45 67 89',     'expected' => '+49711123456789'],
-            ['strategy' => $germany, 'number' => '+49 711 123 45 67 89',  'expected' => '+49711123456789'],
-            ['strategy' => $germany, 'number' => '0049 711 123 45 67 89', 'expected' => '+49711123456789'],
-        ];
+        $link->get('0123456789');
     }
 }

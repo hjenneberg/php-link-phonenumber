@@ -2,7 +2,11 @@
 
 A library to transform any phone number to a format usable in the href attribute of an html anchor.
 
-> The library assumes you're transforming german phone numbers because that's the only use case for me right now. 
+It only works for german phone number formats because that's the only use case for me right now. 
+Feel free to implement strategies for other formats.
+
+This is just a little test project to try out different GitHub related features. 
+Maybe you should not use this in production. 
 
 ## Installation
 

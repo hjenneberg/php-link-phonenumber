@@ -28,12 +28,12 @@ class Germany extends AbstractStrategy
     {
         $hasCountryTrunk = 0 === strpos($number, '+');
         if ($hasCountryTrunk) {
-            return $number;
+            return preg_replace('#^\+490#', '+49', $number);
         }
 
         $hasCountryCode = 0 === strpos($number, '00');
         if ($hasCountryCode) {
-            return '+' . substr($number, 2);
+            return '+' . substr(preg_replace('#^00490#', '0049', $number), 2);
         }
 
         return '+49' . substr($number, 1);
