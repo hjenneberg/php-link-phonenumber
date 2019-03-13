@@ -51,4 +51,17 @@ final class GermanyTest extends TestCase
         self::assertSame('+497111234567890', $strategy->transform('00497111234567890'));
         self::assertSame('+497111234567890', $strategy->transform('07111234567890'));
     }
+
+    /**
+     * @noinspection PhpMethodNamingConventionInspection
+     *
+     * @test
+     */
+    public function it_even_works_for_this_commonly_used_invalid_format()
+    {
+        $strategy = new Germany();
+
+        self::assertSame('+497111234567890', $strategy->transform('+4907111234567890'));
+        self::assertSame('+497111234567890', $strategy->transform('004907111234567890'));
+    }
 }
