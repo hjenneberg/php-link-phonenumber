@@ -29,7 +29,7 @@ final class GermanyTest extends TestCase
      * @noinspection PhpMethodNamingConventionInspection
      *
      * @test
-     * @covers       \HJenneberg\LinkPhoneNumber\Strategy\Germany::isValid
+     * @covers \HJenneberg\LinkPhoneNumber\Strategy\Germany::isValid
      */
     public function it_detects_invalid_phone_numbers(): void
     {

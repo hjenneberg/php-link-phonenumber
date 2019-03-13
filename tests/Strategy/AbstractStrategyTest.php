@@ -23,9 +23,9 @@ final class AbstractStrategyTest extends TestCase
      */
     public function cleanUp_removes_all_unwanted_characters(string $number, string $expected): void
     {
-        /** @var AbstractStrategy $strategy */
-        $strategy = $this->getMockForAbstractClass(AbstractStrategy::class);
+        $strategy = self::getMockForAbstractClass(AbstractStrategy::class);
 
+        /** @var AbstractStrategy $strategy */
         self::assertSame($expected, $strategy->cleanUp($number));
     }
 
