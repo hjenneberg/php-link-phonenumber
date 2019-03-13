@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 use HJenneberg\LinkPhoneNumber\Strategy\AbstractStrategy;
 use PHPUnit\Framework\TestCase;
 
