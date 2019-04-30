@@ -7,8 +7,18 @@ namespace HJenneberg\LinkPhoneNumber\Strategy;
 /**
  * Class Germany
  */
-class Germany extends AbstractStrategy
+class Germany implements StrategyInterface
 {
+    /**
+     * @param string $number
+     *
+     * @return string
+     */
+    public function cleanUp(string $number): string
+    {
+        return preg_replace('#[^\d+]#', '', $number);
+    }
+
     /**
      * @param string $number
      *

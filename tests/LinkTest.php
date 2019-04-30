@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use HJenneberg\LinkPhoneNumber\Exception\InvalidNumberFormat;
 use HJenneberg\LinkPhoneNumber\Link;
-use HJenneberg\LinkPhoneNumber\Strategy\AbstractStrategy;
 use HJenneberg\LinkPhoneNumber\Strategy\StrategyInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -23,8 +22,8 @@ final class LinkTest extends TestCase
      */
     public function it_fails_on_invalid_format()
     {
-        $strategy = self::getMockForAbstractClass(AbstractStrategy::class);
-        $strategy->method('isValid')->willReturn(false);
+        $strategy = self::createMock(StrategyInterface::class);
+        $strategy->expects(static::once())->method('isValid')->willReturn(false);
 
         /** @var StrategyInterface $strategy */
         $link = new Link($strategy);
@@ -44,8 +43,8 @@ final class LinkTest extends TestCase
      */
     public function it_uses_the_given_strategy_for_transformation()
     {
-        $strategy = self::getMockForAbstractClass(AbstractStrategy::class);
-        $strategy->method('isValid')->willReturn(true);
+        $strategy = self::createMock(StrategyInterface::class);
+        $strategy->expects(static::once())->method('isValid')->willReturn(true);
         $strategy->expects(static::once())->method('transform');
 
         /** @var StrategyInterface $strategy */
